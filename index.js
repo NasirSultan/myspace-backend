@@ -11,6 +11,7 @@ app.use(cors({
   origin: [
 
     "http://localhost:3000",
+    "https://myspace-frontend.vercel.app",
 
   ],
   methods: ["POST", "DELETE", "GET", "PUT"],
