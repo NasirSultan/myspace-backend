@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
-
+const contactRoutes = require('./routes/contactRoutes');
 dotenv.config();
 const app = express();
 
@@ -10,7 +10,7 @@ const app = express();
 app.use(cors({
   origin: [
 
-    "http://localhost:3000",
+    "http://localhost:5173",
     "https://myspace-frontend.vercel.app",
 
   ],
@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
-
+app.use('/api/contact', contactRoutes);
 // MongoDB connection and server startup
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
