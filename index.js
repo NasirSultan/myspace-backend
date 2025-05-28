@@ -12,7 +12,7 @@ app.use(cors({
 
     "http://localhost:5173",
     "https://myspace-frontend.vercel.app",
-    "https://nasirfreelance-euxl.vercel.app",
+    "https://nasirfreelance.vercel.app",
 
   ],
   methods: ["POST", "DELETE", "GET", "PUT"],
