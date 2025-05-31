@@ -2,6 +2,10 @@ const Post = require('../models/Post');
 const fs = require('fs').promises;
 const path = require('path');
 
+
+const os = require('os');
+
+
 exports.createPost = async (req, res) => {
   try {
     const { title, explanation } = req.body;
@@ -11,15 +15,20 @@ exports.createPost = async (req, res) => {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
-    // ✅ Write file temporarily to /tmp (Vercel-safe)
-    const tmpFilePath = path.join('/tmp', file.originalname);
+    // Use OS temp directory (cross-platform safe)
+    const tmpDir = os.tmpdir();
+
+    // Create a unique filename to avoid overwrites (optional)
+    const uniqueFilename = Date.now() + '-' + file.originalname.replace(/\s+/g, '_');
+    const tmpFilePath = path.join(tmpDir, uniqueFilename);
+
     await fs.writeFile(tmpFilePath, file.buffer);
 
-    // Store path or just the original filename
+    // Save the path or filename in DB (consider storing only filename or URL for portability)
     const newPost = await Post.create({
       title,
       explanation,
-      fileUrl: tmpFilePath // Optional: upload to Cloudinary or S3 for permanent storage
+      fileUrl: tmpFilePath
     });
 
     res.status(201).json({ message: 'Post created successfully', post: newPost });
@@ -28,6 +37,7 @@ exports.createPost = async (req, res) => {
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
+
 
 exports.getAllPosts = async (req, res) => {
   try {
