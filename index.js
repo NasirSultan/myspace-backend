@@ -13,7 +13,8 @@ const contactRoutes = require('./routes/contactRoutes');
 dotenv.config();
 const app = express();
 app.use(express.urlencoded({ extended: true }));
-// Middleware
+app.use('/tmp', express.static('/tmp'));
+
 app.use(cors({
   origin: [
 
